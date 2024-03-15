@@ -1,5 +1,27 @@
 version: '3'
 services:
+  211-jdk21:
+    build: ./211-jdk21
+    ports:
+      - 9203:9200
+    environment:
+      - cluster.name=211-jdk21
+      - node.name=211-jdk21
+      - discovery.type=single-node
+      - bootstrap.memory_lock=true # along with the memlock settings below, disables swapping
+      - OPENSEARCH_INITIAL_ADMIN_PASSWORD=La6ohgaighei
+      - "OPENSEARCH_JAVA_OPTS=-Xms256m -Xmx256m"
+  211-jdk17:
+    image: opensearchproject/opensearch:2.11.1
+    ports:
+      - 9204:9200
+    environment:
+      - cluster.name=211-jdk17
+      - node.name=211-jdk17
+      - discovery.type=single-node
+      - bootstrap.memory_lock=true # along with the memlock settings below, disables swapping
+      - OPENSEARCH_INITIAL_ADMIN_PASSWORD=La6ohgaighei
+      - "OPENSEARCH_JAVA_OPTS=-Xms256m -Xmx256m"
   jdk21:
     image: opensearchproject/opensearch:2.12.0
     ports:
