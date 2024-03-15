@@ -9,10 +9,12 @@ This repository contains a smaller test case, mimicking what our integration tes
 # How to run
 
 Use `docker-compose up` in this directory.
-That will create two services, `jdk17` and `jdk21`.
-The former is based on the official image and simply adds Corretto 17 to run OpenSearch 2.12.0 on the previous JDK. Other JDK 17 distributions work identically.
+That will create four services, `jdk17` and `jdk21` versions of 2.12.0 and 2.11.1.
+For 2.11, we manually installed a Corretto 21, and for 2.12, we did the same for Corretto 17 in the custom Docker images.
+Each service has its 9200 port mapped between `9201` and `9204`.
 
-Two ports are mapped, `9201` and `9202`.
-
-Then run `send-data.sh`, which produces a bulk index file, and runs the same bulk operation multiple times against each OpenSearch server.
+Then run `send-data.sh`, which produces a bulk index file and runs the same bulk operation multiple times against each OpenSearch server.
 It only shows output when it finds that a circuit breaker has triggered.
+You will see that the JDK 17-based OpenSearch nodes do not run into memory issues, whereas the JDK 21 ones do so regularly.
+
+The test is non-deterministic because it depends on GC activity and timing, but the trend is very clear. 
