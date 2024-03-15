@@ -8,6 +8,8 @@ This repository contains a smaller test case, mimicking what our integration tes
 
 # How to run
 
+## Shell Script Test
+
 Use `docker-compose up` in this directory.
 That will create four services, `jdk17` and `jdk21` versions of 2.12.0 and 2.11.1.
 For 2.11, we manually installed a Corretto 21, and for 2.12, we did the same for Corretto 17 in the custom Docker images.
@@ -18,3 +20,20 @@ It only shows output when it finds that a circuit breaker has triggered.
 You will see that the JDK 17-based OpenSearch nodes do not run into memory issues, whereas the JDK 21 ones do so regularly.
 
 The test is non-deterministic because it depends on GC activity and timing, but the trend is very clear. 
+
+## JUnit Test
+
+This repository also contains a JUnit test that triggers the issues.
+
+It runs the [BulkIndexTest](src/test/java/opensearchissue/BulkIndexTest.java) test case against the following OpenSearch instances. (via testcontainers)
+
+- OpenSearch 2.11.1 with JDK 17
+- OpenSearch 2.11.1 with JDK 21
+- OpenSearch 2.12.0 with JDK 17
+- OpenSearch 2.12.0 with JDK 21
+
+Run the following command to execute the test suite:
+
+```
+./mvnw clean test
+```
